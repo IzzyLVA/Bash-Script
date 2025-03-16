@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Check for superuser privileges
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root"
+   exit 1
+fi
+
+# Enable logging
+LOGFILE="/var/log/security_script.log"
+exec > >(tee -i "$LOGFILE") 2>&1
+echo "Script started at $(date)"
+
+# Function to handle errors
+handle_error() {
+   echo "Error: $1"
+   exit 1
+}
+
+# 1. Set minimum password length
+echo "Setting minimum password length to 8..."
+cp /etc/pam.d/common-password /etc/pam.d/common-password.bak || handle_error "Failed to back up common-password"
+sed -i 's/pam_unix.so/& minlen=8/' /etc/pam.d/common-password || handle_error "Failed to set minimum password length"
+echo "Minimum password length set."
+
+# 2. Disable null passwords
+echo "Disabling null passwords..."
+cp /etc/pam.d/common-auth /etc/pam.d/common-auth.bak || handle_error "Failed to back up common-auth"
+sed -i '/nullok/d' /etc/pam.d/common-auth || handle_error "Failed to disable null passwords"
+echo "Null passwords are now disabled."
+
+# 3. Enable UFW (Uncomplicated Firewall)
+echo "Enabling UFW..."
+ufw enable || handle_error "Failed to enable UFW"
+echo "UFW has been enabled."
+
+# 4. Install X2GO service
+echo "Installing X2GO service..."
+apt-get update || handle_error "Failed to update package lists"
+apt-get install -y x2goserver || handle_error "Failed to install X2GO service"
+echo "X2GO service has been installed."
+
+# 5. Disable Nginx service
+echo "Stopping and disabling Nginx service..."
+systemctl stop nginx || echo "Nginx service may not be running"
+systemctl disable nginx || handle_error "Failed to disable Nginx service"
+echo "Nginx service has been disabled."
+
+# 6. Ensure system checks for updates daily
+echo "Configuring system to check for updates daily..."
+cat <<EOF > /etc/apt/apt.conf.d/10periodic || handle_error "Failed to configure update checks"
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+EOF
+echo "System is now set to check for updates daily."
+
+# 7. Disable SSH root login
+echo "Disabling SSH root login..."
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak || handle_error "Failed to back up sshd_config"
+sed -i 's/^PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config || handle_error "Failed to disable SSH root login"
+systemctl restart sshd || handle_error "Failed to restart SSH service"
+echo "SSH root login has been disabled."
+
+echo "All tasks completed successfully at $(date)."
+
+
+
