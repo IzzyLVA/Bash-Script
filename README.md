@@ -46,7 +46,7 @@ This script performs the following key actions:
 
 ---
 
-## -----------------
+## 
 ## End Of Overview
-## -----------------
+## 
 
