@@ -1,36 +1,52 @@
-#!/bin/bash
+# 🛡️ Linux Security Hardening Script for CyberPatriot
 
-# -------------------------
-# Overview: Linux Security Hardening Script for CyberPatriot
-# -------------------------
-# This script enhances the security of a Linux system, tailored for the CyberPatriot competition.
-# It applies critical security configurations and automates essential hardening tasks, ensuring
-# the system aligns with cybersecurity best practices.
+This Bash script is designed to **secure and harden a Linux system** in preparation for CyberPatriot competitions. It automates essential security tasks, ensuring the system aligns with cybersecurity best practices.
 
-# Key Features:
-# 1. Prerequisite Check:
-#    - Verifies script execution with root privileges to allow system-level changes.
-# 2. Logging:
-#    - Activates logging to keep a detailed record in '/var/log/security_script.log'.
-# 3. Error Handling:
-#    - Ensures potential issues are handled gracefully with clear error messages.
-# 4. Security Configurations:
-#    - Sets a minimum password length of 8 characters.
-#    - Disables null passwords for better account security.
-# 5. Firewall Setup:
-#    - Enables the Uncomplicated Firewall (UFW) for enhanced network security.
-# 6. Remote Access Service:
-#    - Installs the X2GO service for secure remote desktop access.
-# 7. Service Management:
-#    - Stops and disables the Nginx service to reduce the attack surface.
-# 8. System Updates:
-#    - Configures daily update checks to address vulnerabilities promptly.
-# 9. SSH Security:
-#    - Disables SSH root login to prevent unauthorized root-level access.
-#
-# The script includes modularity for easy expansion and ensures system configurations are
-# backed up before changes. Detailed logs are maintained for auditing and troubleshooting.
+---
 
-# -------------------------
-# End of Overview
-# -------------------------
+## 🔍 Overview
+
+This script performs the following key actions:
+
+### ✅ Prerequisite Check
+- Ensures the script is run with **root privileges** to allow system-level changes.
+
+### 📝 Logging
+- Logs all operations to `/var/log/security_script.log` for transparency and auditing.
+
+### ⚠️ Error Handling
+- Handles errors gracefully and provides clear feedback to the user.
+
+### 🔐 Security Configurations
+- Enforces a **minimum password length** of 8 characters.
+- Disables **null passwords** to prevent weak account setups.
+
+### 🔥 Firewall Setup
+- Enables and configures **UFW (Uncomplicated Firewall)** for basic network protection.
+
+### 🖥️ Remote Access
+- Installs **X2GO**, a secure remote desktop access service.
+
+### 🛑 Service Management
+- Stops and disables the **Nginx** service to reduce unnecessary exposure.
+
+### ⬆️ System Updates
+- Sets up **daily update checks** to keep the system up to date with security patches.
+
+### 🔒 SSH Security
+- **Disables root login** over SSH to reduce the risk of unauthorized access.
+
+---
+
+## ⚙️ Script Features
+
+- Modular and extensible design for future enhancements.
+- Backs up configuration files before changes.
+- Detailed logging for **auditing and troubleshooting**.
+
+---
+
+## -----------------
+## End Of Overview
+## -----------------
+
